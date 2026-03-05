@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Theme Generator Pro</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="title">Theme Generator Pro</h1>
+        <p class="subtitle">
+          Create a theme with CSS variables + export, save & preview.
+        </p>
+      </header>
+
+      <section class="grid">
+        <!-- CONTROLS -->
+        <div class="panel">
+          <h2 class="section-title">Controls</h2>
+
+          <div class="control">
+            <label for="primaryColor">Primary</label>
+            <input type="color" id="primaryColor" />
+          </div>
+
+          <div class="control">
+            <label for="bgColor">Background</label>
+            <input type="color" id="bgColor" />
+          </div>
+
+          <div class="control">
+            <label for="textColor">Text</label>
+            <input type="color" id="textColor" />
+          </div>
+
+          <div class="control">
+            <label for="cardColor">Card</label>
+            <input type="color" id="cardColor" />
+          </div>
+
+          <div class="control">
+            <label for="radiusRange"
+              >Radius:
+              <strong><span id="radiusValue">16</span>px</strong></label
+            >
+            <input type="range" id="radiusRange" min="6" max="28" value="16" />
+          </div>
+
+          <div class="control">
+            <label for="shadowRange"
+              >Shadow: <strong><span id="shadowValue">40</span></strong></label
+            >
+            <input type="range" id="shadowRange" min="0" max="80" value="40" />
+          </div>
+
+          <div class="actions">
+            <button id="randomBtn" class="btn btn-primary" type="button">
+              Random
+            </button>
+            <button id="resetBtn" class="btn btn-ghost" type="button">
+              Reset
+            </button>
+          </div>
+
+          <div class="actions">
+            <button id="copyCssBtn" class="btn btn-secondary" type="button">
+              Copy CSS
+            </button>
+          </div>
+
+          <div class="save-row">
+            <input
+              id="themeName"
+              class="input"
+              placeholder="Theme name (e.g. Neon Night)"
+            />
+            <button id="saveBtn" class="btn btn-primary" type="button">
+              Save
+            </button>
+          </div>
+
+          <p id="statusText" class="status" aria-live="polite"></p>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="panel preview">
+          <h2 class="section-title">Preview</h2>
+
+          <div class="preview-card">
+            <h3>Card title</h3>
+            <p>
+              This is preview text. Primary color highlights buttons and
+              accents.
+            </p>
+
+            <div class="preview-actions">
+              <button class="btn btn-primary" type="button">Primary</button>
+              <button class="btn btn-secondary" type="button">Secondary</button>
+              <button class="btn btn-ghost" type="button">Ghost</button>
+            </div>
+          </div>
+
+          <div class="saved">
+            <div class="saved-head">
+              <h2 class="section-title">Saved themes</h2>
+              <button id="clearAllBtn" class="btn btn-ghost" type="button">
+                Clear all
+              </button>
+            </div>
+
+            <ul id="themesList" class="themes-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <small>© <span id="year"></span> Theme Generator Pro</small>
+      </footer>
+    </div>
+  </body>
+</html>
