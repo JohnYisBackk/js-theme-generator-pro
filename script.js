@@ -1,5 +1,5 @@
 // ===============================
-// 1️⃣ GET ELEMENTS FROM DOM
+// 1. GET ELEMENTS FROM DOM
 // ===============================
 
 const primaryColor = document.getElementById("primaryColor");
@@ -25,7 +25,7 @@ const themesList = document.getElementById("themesList");
 const year = document.getElementById("year");
 
 // ===============================
-// 2️⃣ DEFAULT THEME OBJECT
+// 2. DEFAULT THEME OBJECT
 // ===============================
 
 const DEFAULT_THEME = {
@@ -38,7 +38,7 @@ const DEFAULT_THEME = {
 };
 
 // ===============================
-// 3️⃣ HELPER FUNCTIONS
+// 3. HELPER FUNCTIONS
 // ===============================
 
 function setStatus(message) {
@@ -61,7 +61,7 @@ function createShadow(intensity) {
 }
 
 // ===============================
-// 4️⃣ APPLY THEME
+// 4. APPLY THEME
 // ===============================
 
 function applyTheme(theme) {
@@ -86,7 +86,7 @@ function applyTheme(theme) {
 }
 
 // ===============================
-// 5️⃣ GET THEME FROM UI
+// 5. GET THEME FROM UI
 // ===============================
 
 function getThemeFromUI() {
@@ -101,7 +101,7 @@ function getThemeFromUI() {
 }
 
 // ===============================
-// 6️⃣ RANDOM THEME GENERATOR
+// 6. RANDOM THEME GENERATOR
 // ===============================
 
 function randomHex() {
@@ -128,8 +128,9 @@ function randomTheme() {
 }
 
 // ===============================
-// 7️⃣ LOCAL STORAGE
+// 7. LOCAL STORAGE
 // ===============================
+
 const STORAGE_KEY = "theme_generator_pro_themes";
 
 function loadThemes() {
@@ -143,8 +144,9 @@ function loadThemes() {
 function saveThemes(themes) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(themes));
 }
+
 // ===============================
-// 8️⃣ RENDER SAVED THEMES
+// 8. RENDER SAVED THEMES
 // ===============================
 
 function renderThemes() {
@@ -167,50 +169,66 @@ function renderThemes() {
     const li = document.createElement("li");
     li.className = "theme-item";
 
-    li.innerHTML = `
-      <div class="theme-meta">
-        <div class="theme-name">${item.name}</div>
-        <div class="theme-vars">
-          primary ${item.theme.primary} • bg ${item.theme.bg} • radius ${item.theme.radius}px
-        </div>
-      </div>
+    const meta = document.createElement("div");
+    meta.className = "theme-meta";
 
-      <div class="theme-actions">
-        <button class="btn btn-secondary" data-action="apply" data-index="${index}">Apply</button>
-        <button class="btn btn-ghost" data-action="delete" data-index="${index}">Delete</button>
-      </div>
-    `;
+    const name = document.createElement("div");
+    name.className = "theme-name";
+    name.textContent = item.name;
+
+    const vars = document.createElement("div");
+    vars.className = "theme-vars";
+    vars.textContent = `primary ${item.theme.primary} | bg ${item.theme.bg} | radius ${item.theme.radius}px`;
+
+    const actions = document.createElement("div");
+    actions.className = "theme-actions";
+
+    const applyBtn = document.createElement("button");
+    applyBtn.className = "btn btn-secondary";
+    applyBtn.dataset.action = "apply";
+    applyBtn.dataset.index = String(index);
+    applyBtn.textContent = "Apply";
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-ghost";
+    deleteBtn.dataset.action = "delete";
+    deleteBtn.dataset.index = String(index);
+    deleteBtn.textContent = "Delete";
+
+    meta.append(name, vars);
+    actions.append(applyBtn, deleteBtn);
+    li.append(meta, actions);
 
     themesList.appendChild(li);
   });
-
-  themesList.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-action]");
-    if (!btn) return;
-
-    const action = btn.dataset.action;
-    const index = Number(btn.dataset.index);
-
-    const themes = loadThemes();
-    const item = themes[index];
-    if (!item) return;
-
-    if (action === "apply") {
-      applyTheme(item.theme);
-      setStatus(`Applied: ${item.name} ✅`);
-    }
-
-    if (action === "delete") {
-      themes.splice(index, 1);
-      saveThemes(themes);
-      renderThemes();
-      setStatus("Theme deleted 🗑️");
-    }
-  });
 }
 
+themesList.addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-action]");
+  if (!btn) return;
+
+  const action = btn.dataset.action;
+  const index = Number(btn.dataset.index);
+
+  const themes = loadThemes();
+  const item = themes[index];
+  if (!item) return;
+
+  if (action === "apply") {
+    applyTheme(item.theme);
+    setStatus(`Applied: ${item.name}`);
+  }
+
+  if (action === "delete") {
+    themes.splice(index, 1);
+    saveThemes(themes);
+    renderThemes();
+    setStatus("Theme deleted");
+  }
+});
+
 // ===============================
-// 9️⃣ SAVE THEME
+// 9. SAVE THEME
 // ===============================
 
 function addTheme(name, theme) {
@@ -224,11 +242,12 @@ function addTheme(name, theme) {
 
   saveThemes(themes);
 }
+
 saveBtn.addEventListener("click", () => {
   const name = themeNameInput.value.trim();
 
   if (!name) {
-    setStatus("Enter a theme name ✍️");
+    setStatus("Enter a theme name");
     return;
   }
 
@@ -236,13 +255,11 @@ saveBtn.addEventListener("click", () => {
   themeNameInput.value = "";
 
   renderThemes();
-  setStatus("Theme saved ✅");
+  setStatus("Theme saved");
 });
 
-renderThemes();
-
 // ===============================
-// 🔟 COPY CSS VARIABLES
+// 10. COPY CSS VARIABLES
 // ===============================
 
 function themeToCSS(theme) {
@@ -253,7 +270,7 @@ function themeToCSS(theme) {
   --card: ${theme.card};
   --radius: ${theme.radius}px;
   --shadow: ${createShadow(theme.shadow)};
-    }`;
+}`;
 }
 
 function copyCSS() {
@@ -262,14 +279,14 @@ function copyCSS() {
 
   navigator.clipboard
     .writeText(css)
-    .then(() => setStatus("CSS copied ✅"))
-    .catch(() => setStatus("Copy failed ❌"));
+    .then(() => setStatus("CSS copied"))
+    .catch(() => setStatus("Copy failed"));
 }
 
 copyCssBtn.addEventListener("click", copyCSS);
 
 // ===============================
-// 1️⃣1️⃣ RANDOM BUTTON
+// 11. RANDOM BUTTON
 // ===============================
 
 randomBtn.addEventListener("click", () => {
@@ -278,7 +295,7 @@ randomBtn.addEventListener("click", () => {
 });
 
 // ===============================
-// 1️⃣2️⃣ RESET BUTTON
+// 12. RESET BUTTON
 // ===============================
 
 resetBtn.addEventListener("click", () => {
@@ -286,17 +303,17 @@ resetBtn.addEventListener("click", () => {
 });
 
 // ===============================
-// 1️⃣3️⃣ CLEAR ALL THEMES
+// 13. CLEAR ALL THEMES
 // ===============================
 
 clearAllBtn.addEventListener("click", () => {
   localStorage.removeItem(STORAGE_KEY);
   renderThemes();
-  setStatus("All themes cleared 🗑️");
+  setStatus("All themes cleared");
 });
 
 // ===============================
-// 1️⃣4️⃣ RANGE SLIDERS
+// 14. RANGE SLIDERS
 // ===============================
 
 radiusRange.addEventListener("input", () => {
@@ -310,7 +327,7 @@ shadowRange.addEventListener("input", () => {
 });
 
 // ===============================
-// 1️⃣5️⃣ COLOR PICKERS
+// 15. COLOR PICKERS
 // ===============================
 
 primaryColor.addEventListener("input", () => {
@@ -330,14 +347,15 @@ cardColor.addEventListener("input", () => {
 });
 
 // ===============================
-// 1️⃣6️⃣ YEAR IN FOOTER
+// 16. YEAR IN FOOTER
 // ===============================
 
 year.textContent = new Date().getFullYear();
 
 // ===============================
-// 1️⃣7️⃣ INIT
+// 17. INIT
 // ===============================
 
 applyTheme(DEFAULT_THEME);
 renderThemes();
+
